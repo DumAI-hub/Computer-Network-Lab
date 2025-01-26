@@ -53,6 +53,8 @@ int main(){
         
     }
     
+    printf("Server listening on port %d", PORT_NUMBER);
+    
     while (1) {
         
         if((c1_sock = accept(sfd, (struct sockaddr *)&s, (socklen_t *)&slen)) < 0) {
@@ -60,11 +62,13 @@ int main(){
             exit(EXIT_FAILURE);
         }
         
+        
+        
         if((c2_sock = accept(sfd, (struct sockaddr *)&s, (socklen_t *)&slen)) < 0) {
             perror("Accepting failed from client 2");
             exit(EXIT_FAILURE);
         }
-        
+        printf("\nclient 2 connected");
         
         if((rcv = recv(c1_sock, buff, sizeof(buff), 0)) < 0) {
             perror("Recieving error from client 1");
@@ -72,6 +76,12 @@ int main(){
         }
         buff[rcv] = '\0';
         
+        printf("\nClient -> %s\n", buff);
+        
+        if(send(c2_sock, buff, strlen(buff), 0) < 0){
+            perror("Sending to client 2 failed");
+            exit(EXIT_FAILURE);
+        }
         
         //create two separate varible for vowel and consonant
         
@@ -94,6 +104,8 @@ int main(){
         
         vowels[v] = '\0';
         consonants[c] = '\0';
+        
+        printf("\nServer -> \nVowel : %s\nConsonant : %s\n", vowels, consonants);
         
         if(send(c1_sock, vowels, strlen(vowels), 0) < 0) {
             perror("Sending to client 1 failed");
