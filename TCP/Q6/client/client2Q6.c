@@ -4,7 +4,6 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 #include<sys/socket.h>
 #include<arpa/inet.h>
 #include<unistd.h>
@@ -12,7 +11,7 @@
 #define max 1024
 #define PORT 4000
 
-struct sockaddr_in s_addr;
+
 
 
 int main(){
@@ -23,7 +22,7 @@ int main(){
         perror("Socketing failed");
         exit(EXIT_FAILURE);
     }
-    
+    struct sockaddr_in s_addr;
     s_addr.sin_family = AF_INET;
     s_addr.sin_port = htons(PORT);
     s_addr.sin_addr.s_addr = INADDR_ANY;
@@ -39,12 +38,13 @@ int main(){
         perror("recieving error");
         exit(EXIT_FAILURE);
     }
+    buff[rcv] = '\0';
+    
     if((rcv = recv(sfd, buff1, sizeof(buff1), 0)) < 0){
         perror("recieving error");
         exit(EXIT_FAILURE);
     }
-    buff[strlen(buff)] = '\0';
-    buff1[strlen(buff1)] = '\0';
+    buff1[rcv] = '\0';
     
     printf("\nServer -> String sent by client 1 : %s\nConsonants : %s\n", buff, buff1);
     return 0;
