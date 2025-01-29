@@ -1,0 +1,14 @@
+***************
+
+1. Purpose of addr_len:
+   - addr_len is used to tell recvfrom() how much space we have allocated for the address structure
+   - After recvfrom() completes, it updates addr_len to tell us how many bytes were actually used
+
+2. Why reset it:
+   - recvfrom() modifies addr_len during execution
+   - The next recvfrom() needs the original size
+   - Without resetting, we might pass a modified (possibly smaller) value to the next call
+   - This could lead to buffer overflow or truncated addresses
+   
+   
+***************
