@@ -28,7 +28,7 @@ int main(){
 
     s.sin_family = AF_INET;
     s.sin_port = htons(4000);
-    s.sin_addr.s_addr = inet_addr("192.168.127.98");
+    s.sin_addr.s_addr = INADDR_ANY;
 
     slen = sizeof(s);
 
